@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>OIDC Checkboxes</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <h1>OIDC Checkbox App</h1>
+
+  <div id="login">
+    <input id="username" placeholder="username">
+    <input id="password" type="password" placeholder="password">
+    <button onclick="startLogin()">Login</button>
+  </div>
+
+  <div id="grid"></div>
+</div>
+
+<script>
+let token = null;
+let ws = null;
+let checkboxes = [];
+
+// Step 1: redirect to authorize
+function startLogin() {
+  const u = document.getElementById("username").value;
+  const p = document.getElementById("password").value;
+
+  window.location.href = `/authorize?username=${u}&password=${p}`;
+}
+
+// Step 2: check if code exists
+async function handleAuth() {
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get("code");
+
+  if (!code) return;
+
+  // exchange code → token
+  const res = await fetch("/token", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ code })
+  });
+
+  const data = await res.json();
+  token = data.access_token;
+
+  document.getElementById("login").style.display = "none";
+
+  startWebSocket();
+}
+
+// Step 3: connect WS
+function startWebSocket() {
+  ws = new WebSocket(`ws://localhost:3000?token=${token}`);
+
+  ws.onmessage = (e) => {
+    const data = JSON.parse(e.data);
+
+    if (data.type === "init") {
+      createGrid(data.state);
+    } else {
+      checkboxes[data.index].checked = data.value;
+    }
+  };
+}
+
+// Grid
+function createGrid(state) {
+  const grid = document.getElementById("grid");
+  grid.innerHTML = "";
+
+  state.forEach((val, i) => {
+    const cb = document.createElement("input");
+    cb.type = "checkbox";
+    cb.checked = val;
+
+    cb.onchange = () => {
+      ws.send(JSON.stringify({
+        type: "toggle",
+        index: i,
+        value: cb.checked ? 1 : 0
+      }));
+    };
+
+    checkboxes[i] = cb;
+    grid.appendChild(cb);
+  });
+}
+
+// run auth check
+handleAuth();
+</script>
+
+</body>
+</html>

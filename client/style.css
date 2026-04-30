@@ -1,0 +1,93 @@
+/* Global */
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #e2e8f0;
+}
+
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;   /* horizontal center */
+  justify-content: flex-start;
+  min-height: 100vh;
+  padding-top: 40px;
+}
+
+
+
+h1 {
+  margin-bottom: 20px;
+}
+
+/* Login Card */
+#login {
+  background: #1e293b;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 280px;
+  margin-bottom: 20px;
+}
+
+/* Inputs */
+#login input {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  background: #334155;
+  color: #e2e8f0;
+}
+
+/* Button */
+#login button {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: #22c55e;
+  color: #0f172a;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#login button:hover {
+  background: #16a34a;
+  transform: translateY(-1px);
+}
+
+/* Grid */
+/* Center the grid */
+#grid {
+  display: grid;
+  grid-template-columns: repeat(100, 1fr);
+  gap: 4px;
+  
+  width: fit-content;          
+  margin: 0 auto;             
+  padding: 12px;
+  background: #1e293b;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+/* Checkbox */
+#grid input[type="checkbox"] {
+  width: 100%;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #22c55e;
+  transition: transform 0.1s;
+}
+
+#grid input[type="checkbox"]:hover {
+  transform: scale(1.2);
+}
