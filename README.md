@@ -1,10 +1,10 @@
-# 🚀 Real-Time Web Application (Live Checkboxes / Location System)
+# 🚀 Real-Time Web Application (Live Checkboxes)
 
 ## 📌 Project Overview
 
 This project is a real-time web application that demonstrates how distributed systems handle live updates using WebSockets, Redis, and event-driven architecture.
 
-Users can interact with a shared UI (checkbox grid / live tracking system), and all updates are reflected instantly across connected clients.
+Users can interact with a shared UI (checkbox grid), and all updates are reflected instantly across connected clients.
 
 The system is designed to simulate **high-scale real-time applications** similar to modern collaborative platforms.
 
@@ -30,6 +30,18 @@ The system is designed to simulate **high-scale real-time applications** similar
 - JWT-based Auth (OIDC-style simulation)
 
 ---
+## Folder structure 
+```
+.
+├── README.md
+├── client
+│   ├── index.html
+│   └── style.css
+├── package-lock.json
+├── package.json
+└── server
+    └── index.js
+```
 
 ## ✨ Features Implemented
 
