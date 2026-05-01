@@ -46,11 +46,9 @@ const users = [
   }
 ];
 
-// ==========================
-// 🔐 OIDC ENDPOINTS
-// ==========================
 
-// 1. AUTHORIZE (login + issue code)
+
+
 app.get("/authorize", (req, res) => {
   const { username, password } = req.query;
 
@@ -61,16 +59,16 @@ app.get("/authorize", (req, res) => {
     return res.send("Invalid password");
   }
 
-  // generate auth code
+
   const code = crypto.randomBytes(16).toString("hex");
 
   authCodes.set(code, user);
 
-  // redirect back to client with code
+
   res.redirect(`/?code=${code}`);
 });
 
-// 2. TOKEN (exchange code → token)
+
 app.post("/token", (req, res) => {
   const { code } = req.body;
 
@@ -103,20 +101,18 @@ app.get("/userinfo", (req, res) => {
   }
 });
 
-// ==========================
-// CHECKBOX SYSTEM
-// ==========================
+
 
 const TOTAL_CHECKBOXES = 10000;
 let checkboxState = new Array(TOTAL_CHECKBOXES).fill(0);
 
-// Redis load
+
 (async () => {
   const data = await redis.get("checkbox_state");
   if (data) checkboxState = JSON.parse(data);
 })();
 
-// Rate limit
+
 const rateLimitMap = new Map();
 function isRateLimited(userId) {
   const now = Date.now();
@@ -136,7 +132,7 @@ function isRateLimited(userId) {
   return entry.count > 10;
 }
 
-// Pub/Sub
+
 sub.subscribe("checkbox_updates");
 sub.on("message", (_, message) => {
   wss.clients.forEach(client => {
@@ -146,7 +142,7 @@ sub.on("message", (_, message) => {
   });
 });
 
-// WebSocket with token auth
+
 wss.on("connection", (ws, req) => {
   const url = new URL(req.url, "http://localhost");
   const token = url.searchParams.get("token");
